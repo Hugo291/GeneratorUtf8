@@ -7,7 +7,7 @@ line = 70
 width = 1200
 
 #height of images
-height = line * 2500
+height = line * 1
 
 #font
 Arial_ttf = 'ARIALUNI.TTF'
@@ -27,19 +27,17 @@ current_index_letter = 0
 min_size_police = 12
 max_size_police = 40
 
-for letter_index in range(0, 25000):
+for letter_index in range(402, 403):
 
     #current char
     char = chr(letter_index)
-
-
 
     if char.isprintable() and char != ' ':
 
         print(letter_index,char)
 
         #The current letter witout undefined caracteres
-        current_index_letter += 1
+
 
         #Between police_size min and max
         for size_Police in range(min_size_police, max_size_police):
@@ -59,8 +57,9 @@ for letter_index in range(0, 25000):
             d.text(size, char, font=font, fill=(0, 0, 0))
 
             #debug
-            #print(chr(letter_index), 'size', size, 'police', size_Police)
+            print(chr(letter_index), 'size', size, 'police', size_Police)
 
+        current_index_letter += 1
 #Save the image
 img.save('image.png')
 
