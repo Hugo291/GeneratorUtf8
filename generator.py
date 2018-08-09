@@ -15,7 +15,7 @@ def draw(first_char_utf_8_number : int, last_char_utf_8_number:int, debug = Fals
 	width = 1200
 
 	#height of images 
-	height = line * number_lines
+	height = line * (number_lines+1)
 
 	#font
 	Arial_ttf = 'ARIALUNI.TTF'
