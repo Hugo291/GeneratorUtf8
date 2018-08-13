@@ -1,4 +1,4 @@
-# GeneratorUtf8
+# Image UTF 8 Generator
 
 This program is useful for creating an image with multiple char. It's usable for OCR learning (like, Tesseract-OCR, open-CV, etc...).
 
