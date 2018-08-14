@@ -1,87 +1,108 @@
 from PIL import Image, ImageDraw, ImageFont
 
 
+def draw(first_char_number: int, last_char_number: int, file_name='image.png', debug=False, ):
+    """
+    Draw image with all character between two value
+    :param first_char_number: First number of character to be generated
+    :param last_char_number: Last character to be generated
+    :param debug: Boolean that enable the user to display all log during process
+    :param file_name: The file name for the output file
+    :return: dict of all character generated and their position in the image
+    """
+    number_lines = get_image_height(first_char_number, last_char_number)
 
-def draw(first_char_utf_8_number : int, last_char_utf_8_number:int, debug = False, file_name = 'image.png'):
+    # the height of one line in px
+    line = 70
 
-	number_lines = get_image_height(first_char_utf_8_number , last_char_utf_8_number)
+    last_char_number = last_char_number + 1
 
-	#the height of one line in px
-	line = 70
+    # width of image in px
+    width = 1200
 
-	last_char_utf_8_number = last_char_utf_8_number+1
+    # height of images
+    height = line * (number_lines + 1)
 
-	#width of image in px
-	width = 1200
+    # font
+    police_ttf = 'ARIALUNI.TTF'
 
-	#height of images 
-	height = line * (number_lines+1)
+    # Space between chars
+    space = 10
 
-	#font
-	Arial_ttf = 'ARIALUNI.TTF'
+    # Create the image in memory
+    img = Image.new('RGB', (width, height), color='white')
 
-	#Space between chars
-	space = 10
+    # init the current count of char
+    current_char_index = 0
 
-	#Create the image in memory
-	img = Image.new('RGB', (width, height), color='white')
+    # size police
+    min_police_size = 12
+    max_police_size = 25
 
-	#init the current count of char
-	current_char_index = 0
+    dict_char = {}
 
-	#size police
-	min_police_size = 12
-	max_police_size = 40
+    for letter_index in range(first_char_number, last_char_number):
 
-	for letter_index in range(first_char_utf_8_number, last_char_utf_8_number):
+        list_positions = []
 
-		#current char
-		char = chr(letter_index)
+        # current char
+        char = chr(letter_index)
 
-		if char.isprintable() and char != ' ':
+        if char.isprintable() and char != ' ':
 
-			print("char = ",chr(letter_index) , '\t utf-8 number : ',letter_index) 
+            dict_char[char] = list_positions
 
-			#Between police_size min and max
-			for size_Police in range(min_police_size, max_police_size):
+            print("char = ", chr(letter_index), '\t utf-8 number : ', letter_index)
 
-				#Size of image
-				size = ( ( (size_Police+space) + ( (size_Police - min_police_size)*space*4) ) + space , line * current_char_index)
+            # Between police_size min and max
+            for size_Police in range(min_police_size, max_police_size):
 
-				#The font with the size
-				font = ImageFont.truetype(font=Arial_ttf, size=size_Police)
+                # position char
+                position_x = ((size_Police + space) + ((size_Police - min_police_size) * space * 4)) + space
+                position_y = line * current_char_index
 
-				#add Font to text
-				d = ImageDraw.Draw(img)
+                # tuple size
+                size = (position_x, position_y)
 
-				#write in image
-				d.text(size, char, font=font, fill=(0, 0, 0))
+                # The font with the size
+                font = ImageFont.truetype(font=police_ttf, size=size_Police)
 
-				#debug
-				if debug == True:
-					print('position = ', size, '\t police size  = ', size_Police)
+                # add Font to text
+                d = ImageDraw.Draw(img)
 
-			current_char_index += 1
-	
-	#Save the image
-	img.save(file_name)
+                # write in image
+                d.text(size, char, font=font, fill=(0, 0, 0))
+
+                # debug
+                if debug:
+                    print('position = ', size, '\t police size  = ', size_Police)
+
+                list_positions.append(size)
+            current_char_index += 1
+
+    # Save the image
+    img.save(file_name)
+
+    return dict_char
+
 
 def get_number() -> int:
-	try :
-		return int(input())
-	except Exception:
-		print("Please enter a number : ")
-		get_number()
+    """
+    This recursive function return a integer.
+    :return: Int input enter by user
+    """
+    try:
+        return int(input())
+    except Exception:
+        print("Please enter a number : ")
+        get_number()
 
-def get_image_height(first_char_utf_8_number , last_char_utf_8_number):
-	return last_char_utf_8_number - first_char_utf_8_number
 
-if __name__ == '__main__':
-	
-	print("Please enter the first utf-8 number : ")
-	first_char_utf_8_number = get_number()
-
-	print("Please enter the last utf-8 number : ")
-	last_char_utf_8_number = get_number()
-
-	draw( first_char_utf_8_number, last_char_utf_8_number)
+def get_image_height(first_char_number, last_char_number):
+    """
+    Return the image height with the
+    :param first_char_number:
+    :param last_char_number:
+    :return:
+    """
+    return last_char_number - first_char_number
